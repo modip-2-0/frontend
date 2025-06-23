@@ -8,7 +8,7 @@ REGISTER_ENDPOINT = "/register"
 LOGIN_ENDPOINT = "/login"
 
 # Page setup
-st.set_page_config(page_title="MODIP - Molecular Docking Platform", layout="centered")
+st.set_page_config(page_title="MODIP", layout="centered")
 
 # Main header and description
 st.title("MODIP: Molecular Docking Integrated Platform")
