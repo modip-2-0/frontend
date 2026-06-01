@@ -1,0 +1,28 @@
+<div class="auth-root">
+  <div class="auth-container">
+    <div class="brand">
+      <span>MODIP</span>
+      <small>Secure access</small>
+    </div>
+
+    <h2>Access the platform</h2>
+    <p class="subtitle">Enter your username and password to continue.</p>
+
+    <form (ngSubmit)="onSubmit()">
+      <div class="field">
+        <label for="login-username">Username</label>
+        <input id="login-username" name="username" [(ngModel)]="username" autocomplete="username" />
+      </div>
+
+      <div class="field">
+        <label for="login-password">Password</label>
+        <input id="login-password" type="password" name="password" [(ngModel)]="password" autocomplete="current-password" />
+      </div>
+
+      <div class="actions">
+        <button class="primary" type="submit" [disabled]="loading">{{ loading ? 'Logging...' : 'Login' }}</button>
+        <button class="secondary" type="button" routerLink="/register">Create account</button>
+      </div>
+    </form>
+  </div>
+</div>

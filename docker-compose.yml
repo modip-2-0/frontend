@@ -1,0 +1,25 @@
+
+services:
+  frontend:
+    build: .
+    ports:
+      - "4200:4200"
+    volumes:
+      - .:/app                
+      - /app/node_modules
+      - ../storage:/storage
+    stdin_open: true
+    tty: true
+    environment:
+      - NODE_ENV=development
+      - STORAGE_PATH=/storage
+      - NG_CLI_ANALYTICS=ci
+    extra_hosts:
+      - "host.docker.internal:host-gateway"
+    networks:
+      - modip_network
+ 
+networks:
+  modip_network:
+    driver: bridge
+

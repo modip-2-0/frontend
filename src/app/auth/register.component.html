@@ -1,0 +1,39 @@
+<div class="auth-root">
+  <div class="auth-container">
+    <div class="brand">
+      <span>MODIP</span>
+      <small>Create your account</small>
+    </div>
+
+    <h2>Create Account</h2>
+    <p class="subtitle">Register a new user to access the platform.</p>
+
+    <form (ngSubmit)="onSubmit()">
+      <div class="field">
+        <label for="register-name">Full Name</label>
+        <input id="register-name" name="name" [(ngModel)]="name" autocomplete="name" />
+      </div>
+      <div class="field">
+        <label for="register-username">Username</label>
+        <input id="register-username" name="username" [(ngModel)]="username" autocomplete="username" />
+      </div>
+      <div class="field">
+        <label for="register-email">Email</label>
+        <input id="register-email" type="email" name="email" [(ngModel)]="email" autocomplete="email" />
+      </div>
+      <div class="field">
+        <label for="register-password">Password</label>
+        <input id="register-password" type="password" name="password" [(ngModel)]="password" autocomplete="new-password" />
+      </div>
+      <div class="field">
+        <label for="register-confirmPassword">Confirm Password</label>
+        <input id="register-confirmPassword" type="password" name="confirmPassword" [(ngModel)]="confirmPassword" autocomplete="new-password" />
+      </div>
+
+      <div class="actions">
+        <button class="primary" type="submit" [disabled]="loading">{{ loading ? 'Creating...' : 'Create Account' }}</button>
+        <button class="secondary" type="button" routerLink="/login">Back to login</button>
+      </div>
+    </form>
+  </div>
+</div>
