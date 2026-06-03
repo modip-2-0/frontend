@@ -1,0 +1,80 @@
+<div class="docking-container">
+  <h2>New Docking Job</h2>
+
+  <form (ngSubmit)="onSubmit()" class="docking-form">
+    <!-- Fila de dos columnas: Targets y Query -->
+    <div class="row">
+      <!-- Tarjeta de Targets (selección múltiple) -->
+      <div class="card selection-card">
+        <h3>1. Select Targets</h3>
+        <div class="scrollable-list">
+          @if (userTargets.length === 0) {
+            <!-- Sin targets no se muestra nada -->
+          } @else {
+            @for (t of userTargets; track t._id) {
+              <label class="checkbox-label">
+                <input type="checkbox" [value]="t._id" (change)="onTargetToggle(t._id, $event)" />
+                <strong>{{ t.name }}</strong>
+                <span class="receptor">({{ t.receptor }})</span>
+              </label>
+            }
+          }
+        </div>
+      </div>
+
+      <!-- Tarjeta de Query (selección única) -->
+      <div class="card selection-card">
+        <h3>2. Select Query</h3>
+        <div class="scrollable-list">
+          @if (userQueries.length === 0) {
+            <!-- Sin queries no se muestra nada -->
+          } @else {
+            @for (q of userQueries; track q._id) {
+              <label class="radio-label">
+                <input type="radio" name="query" [value]="q._id" (change)="onQuerySelected(q._id)" [checked]="selectedQueryId === q._id" />
+                <span class="query-text">{{ q.content | slice:0:80 }}</span>
+                <span class="assay-count">({{ q.assays.length }} assays)</span>
+              </label>
+            }
+          }
+        </div>
+      </div>
+    </div>
+
+    <!-- Sección de compuestos (aparece al elegir query) -->
+    @if (selectedQueryId && availableCompounds.length > 0) {
+      <div class="card compound-card">
+        <h3>3. Select Compounds</h3>
+        <div class="compound-toolbar">
+          <input type="text" placeholder="Filter compounds..." [(ngModel)]="filterText" name="filter" class="filter-input" />
+          <button type="button" class="small-btn" (click)="selectAllCompounds()">Select All</button>
+          <button type="button" class="small-btn" (click)="deselectAllCompounds()">Deselect All</button>
+        </div>
+        <div class="compound-grid">
+          @for (c of filteredCompounds; track c.path) {
+            <label class="checkbox-label compound-item">
+              <input type="checkbox" [(ngModel)]="c.selected" [name]="c.path" />
+              {{ c.name }}
+            </label>
+          }
+        </div>
+      </div>
+    }
+
+    <!-- Nombre opcional del trabajo -->
+    <div class="name-row">
+      <label class="name-label">Job name (optional):</label>
+      <input type="text" [(ngModel)]="dockingName" name="jobName" class="name-input" />
+    </div>
+
+    <!-- Botón de envío -->
+    <button type="submit" [disabled]="loading" class="submit-btn">
+      {{ loading ? 'Submitting...' : 'Submit Docking' }}
+    </button>
+  </form>
+
+  <!-- Mensaje de resultado -->
+  @if (resultMessage) {
+    <div [class]="'message ' + resultType">{{ resultMessage }}</div>
+  }
+</div>

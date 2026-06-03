@@ -6,12 +6,12 @@
     </div>
 
     <h2>Access the platform</h2>
-    <p class="subtitle">Enter your username and password to continue.</p>
+    <p class="subtitle">Enter your email and password to continue.</p>
 
     <form (ngSubmit)="onSubmit()">
       <div class="field">
-        <label for="login-username">Username</label>
-        <input id="login-username" name="username" [(ngModel)]="username" autocomplete="username" />
+        <label for="login-email">Email</label>
+        <input id="login-email" type="email" name="email" [(ngModel)]="email" autocomplete="email" />
       </div>
 
       <div class="field">
@@ -21,7 +21,7 @@
 
       <div class="actions">
         <button class="primary" type="submit" [disabled]="loading">{{ loading ? 'Logging...' : 'Login' }}</button>
-        <button class="secondary" type="button" routerLink="/register">Create account</button>
+        <button class="secondary" type="button" routerLink="/auth/register">Create account</button>
       </div>
     </form>
   </div>

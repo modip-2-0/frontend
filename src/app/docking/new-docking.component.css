@@ -1,0 +1,174 @@
+.docking-container {
+  max-width: 1100px;
+  margin: 0 auto;
+  padding: 2rem 1.5rem;
+  font-family: system-ui, sans-serif;
+}
+
+h2 {
+  margin-top: 0;
+  margin-bottom: 1.5rem;
+}
+
+/* Dos columnas para targets y query */
+.row {
+  display: flex;
+  gap: 2rem;
+  margin-bottom: 2rem;
+}
+
+.selection-card {
+  flex: 1;
+  min-width: 250px;
+}
+
+.card {
+  background: #fff;
+  border-radius: 10px;
+  box-shadow: 0 4px 12px rgba(0,0,0,0.08);
+  padding: 1.5rem;
+}
+
+.scrollable-list {
+  max-height: 250px;
+  overflow-y: auto;
+  padding-right: 0.5rem;
+}
+
+/* Estilos de los items de lista */
+.checkbox-label, .radio-label {
+  display: flex;
+  align-items: baseline;
+  gap: 0.4rem;
+  padding: 0.4rem 0;
+  border-bottom: 1px solid #f0f0f0;
+  cursor: pointer;
+  font-size: 0.95rem;
+}
+
+.checkbox-label:hover, .radio-label:hover {
+  background-color: #f9f9f9;
+}
+
+.receptor {
+  color: #6c757d;
+  font-size: 0.85rem;
+  margin-left: 0.3rem;
+}
+
+.query-text {
+  flex: 1;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.assay-count {
+  color: #6c757d;
+  font-size: 0.8rem;
+  margin-left: 0.5rem;
+}
+
+/* Tarjeta de compuestos */
+.compound-card {
+  margin-bottom: 2rem;
+}
+
+.compound-toolbar {
+  display: flex;
+  gap: 1rem;
+  margin-bottom: 1rem;
+  align-items: center;
+}
+
+.filter-input {
+  flex: 1;
+  padding: 0.5rem;
+  border: 1px solid #ccc;
+  border-radius: 6px;
+}
+
+.small-btn {
+  background: #e9ecef;
+  border: none;
+  padding: 0.4rem 1rem;
+  border-radius: 6px;
+  cursor: pointer;
+  font-size: 0.85rem;
+}
+
+.small-btn:hover {
+  background: #dee2e6;
+}
+
+.compound-grid {
+  max-height: 300px;
+  overflow-y: auto;
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
+  gap: 0.3rem;
+}
+
+.compound-item {
+  border-bottom: none;
+  background: #f8f9fa;
+  border-radius: 4px;
+  padding: 0.3rem 0.5rem;
+}
+
+/* Fila del nombre */
+.name-row {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  margin-bottom: 2rem;
+}
+
+.name-label {
+  font-weight: 500;
+  white-space: nowrap;
+}
+
+.name-input {
+  flex: 1;
+  padding: 0.6rem;
+  border: 1px solid #ccc;
+  border-radius: 6px;
+}
+
+/* Botón de envío */
+.submit-btn {
+  background: #007bff;
+  color: white;
+  border: none;
+  padding: 0.8rem 2rem;
+  border-radius: 6px;
+  font-size: 1rem;
+  cursor: pointer;
+  transition: background 0.2s;
+}
+
+.submit-btn:disabled {
+  background: #aaa;
+}
+
+.submit-btn:hover:not(:disabled) {
+  background: #0069d9;
+}
+
+/* Mensaje de resultado */
+.message {
+  margin-top: 1.5rem;
+  padding: 1rem;
+  border-radius: 6px;
+}
+
+.message.success {
+  background: #d4edda;
+  color: #155724;
+}
+
+.message.error {
+  background: #f8d7da;
+  color: #721c24;
+}

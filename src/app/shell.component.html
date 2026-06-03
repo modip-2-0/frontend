@@ -1,0 +1,30 @@
+<div class="shell">
+  <aside class="sidebar">
+    <div class="brand">
+      <span>MODIP</span>
+      <small>Data Center</small>
+    </div>
+
+    <nav class="nav-menu">
+      <ng-container *ngFor="let group of modules">
+        <div class="nav-group">{{ group.title }}</div>
+        <a *ngFor="let item of group.items" [routerLink]="item.path" routerLinkActive="active">
+          {{ item.label }}
+        </a>
+      </ng-container>
+    </nav>
+  </aside>
+
+  <section class="content-area">
+    <header class="topbar">
+      <div class="topbar-title">MODIP Platform</div>
+      <button class="user-button" (click)="logout()" title="Logout">
+        {{ userLabel }}
+      </button>
+    </header>
+
+    <main class="content">
+      <router-outlet></router-outlet>
+    </main>
+  </section>
+</div>

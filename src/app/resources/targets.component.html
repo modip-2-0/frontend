@@ -1,0 +1,98 @@
+<div class="targets-container">
+  <!-- Formulario de creación -->
+  <div class="card create-card">
+    <h3>Create New Target</h3>
+    <form (ngSubmit)="onSubmit()">
+      <div class="field">
+        <label>Name</label>
+        <input type="text" [(ngModel)]="newTarget.name" name="name" required />
+      </div>
+
+      <div class="field">
+        <label>Receptor</label>
+        <select [ngModel]="newTarget.receptor" name="receptorSelect" (ngModelChange)="onReceptorSelectChange($event)">
+          @for (r of receptors; track r) {
+            <option [value]="r">{{ r }}</option>
+          }
+          <option value="other">Other...</option>
+        </select>
+        @if (receptorChoice === 'custom') {
+          <input
+            type="text"
+            [(ngModel)]="customReceptor"
+            name="customReceptor"
+            placeholder="Enter custom receptor"
+            class="custom-receptor-input"
+            required
+          />
+        }
+      </div>
+
+      <div class="field">
+        <label>PDBQT file (.pdbqt)</label>
+        <input type="file" (change)="onPdbqtChange($event)" accept=".pdbqt" required />
+      </div>
+
+      <div class="field">
+        <label>Box config file (.txt)</label>
+        <input type="file" (change)="onConfigChange($event)" accept=".txt" required />
+      </div>
+
+      <button type="submit" [disabled]="loadingCreate">Create Target</button>
+      @if (createError) {
+        <div class="error">{{ createError }}</div>
+      }
+    </form>
+  </div>
+
+  <!-- Listado de targets -->
+  <div class="card list-card">
+    <h3>My Targets</h3>
+    @if (targets.length > 0) {
+      <div class="target-list">
+        @for (t of targets; track t._id) {
+          <div class="target-item" (click)="selectTarget(t)">
+            <strong>{{ t.name }}</strong> ({{ t.receptor }})
+            <span class="id">ID: {{ t._id | slice:0:8 }}...</span>
+          </div>
+        }
+      </div>
+    }
+    <!-- Si no hay targets, no se muestra nada (ni siquiera "No targets yet.") -->
+  </div>
+
+  <!-- Modal de inspección -->
+  @if (selectedTarget) {
+    <div class="modal" (click)="closeModal()">
+      <div class="modal-content" (click)="$event.stopPropagation()">
+        <span class="close" (click)="closeModal()">&times;</span>
+        <h4>{{ selectedTarget.name }}</h4>
+        <p><strong>Receptor:</strong> {{ selectedTarget.receptor }}</p>
+        <p><strong>User:</strong> {{ selectedTarget.user }}</p>
+
+        <div class="file-section">
+          <p><strong>PDBQT file:</strong></p>
+          <button (click)="onDownloadFile('pdbqt')">Download</button>
+          <label class="btn-replace">
+            Replace
+            <input type="file" (change)="onReplaceFileChange($event, 'pdbqt')" accept=".pdbqt" hidden />
+          </label>
+        </div>
+
+        <div class="file-section">
+          <p><strong>Box config file:</strong></p>
+          <button (click)="onDownloadFile('config')">Download</button>
+          <label class="btn-replace">
+            Replace
+            <input type="file" (change)="onReplaceFileChange($event, 'config')" accept=".txt" hidden />
+          </label>
+        </div>
+
+        <hr />
+        <button class="btn-delete" (click)="deleteTarget(selectedTarget)" [disabled]="deletingTarget">
+          Delete target
+        </button>
+      </div>
+    </div>
+  }
+</div>

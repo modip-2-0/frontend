@@ -1,8 +1,9 @@
-import { Component } from '@angular/core';
+import { Component, inject } from '@angular/core';   // ← importa inject
 import { FormsModule } from '@angular/forms';
 import { CommonModule } from '@angular/common';
 import { Router, RouterModule } from '@angular/router';
-import { AuthService } from './auth.service';
+import { AuthService } from '../services/auth.service';
+import { firstValueFrom } from 'rxjs';
 
 @Component({
   standalone: true,
@@ -12,17 +13,18 @@ import { AuthService } from './auth.service';
   styleUrls: ['./register.component.css']
 })
 export class RegisterComponent {
-  name = '';
-  username = '';
+  // Usa inject en lugar de constructor
+  private auth = inject(AuthService);
+  private router = inject(Router);
+
   email = '';
+  name = '';
   password = '';
   confirmPassword = '';
   loading = false;
 
-  constructor(private auth: AuthService, private router: Router) {}
-
   async onSubmit() {
-    if (!this.name || !this.username || !this.email || !this.password || !this.confirmPassword) {
+    if (!this.email || !this.name || !this.password || !this.confirmPassword) {
       alert('All fields are required.');
       return;
     }
@@ -33,13 +35,11 @@ export class RegisterComponent {
 
     this.loading = true;
     try {
-      const user = { name: this.name, username: this.username, email: this.email, password: this.password };
-      const res: any = await this.auth.register(user);
+      const user = { email: this.email, name: this.name, password: this.password };
+      const res = await firstValueFrom(this.auth.register(user));
       if (res && res.access_token) {
-        localStorage.setItem('token', res.access_token);
-        localStorage.setItem('username', this.username);
         alert('Registration successful!');
-        this.router.navigateByUrl('/');
+        this.router.navigateByUrl('/app');
       } else {
         alert('Registration failed: unexpected response');
       }

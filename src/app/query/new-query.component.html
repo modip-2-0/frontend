@@ -1,0 +1,40 @@
+<div class="query-container">
+  <h2>New Bioassay Query</h2>
+  <form (ngSubmit)="onSubmit()">
+    <div class="field">
+      <label for="query">Query (natural language or keywords)</label>
+      <textarea id="query" [(ngModel)]="queryText" name="query" rows="5" required></textarea>
+    </div>
+
+    <div class="field">
+      <label>Select targets for this query</label>
+      @if (userTargets.length) {
+        <div class="target-options">
+          @for (t of userTargets; track t._id) {
+            <label class="checkbox-label">
+              <input type="checkbox" [value]="t._id" (change)="onTargetSelection($event, t._id)" />
+              {{ t.name }} ({{ t.receptor }})
+            </label>
+          }
+        </div>
+      } @else {
+        <div>No targets available. Please create a target first.</div>
+      }
+    </div>
+
+    <div class="field">
+      <label class="checkbox-label">
+        <input type="checkbox" [(ngModel)]="autoDock" name="autoDock" />
+        Automatic docking on all compounds after download
+      </label>
+    </div>
+
+    <button type="submit" [disabled]="loading">{{ loading ? 'Submitting...' : 'Submit Query' }}</button>
+  </form>
+
+  @if (resultMessage) {
+    <div [class]="'message ' + resultType">
+      {{ resultMessage }}
+    </div>
+  }
+</div>

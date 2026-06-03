@@ -1,8 +1,9 @@
-import { Component } from '@angular/core';
+import { Component, inject } from '@angular/core';   // ← importa inject
 import { FormsModule } from '@angular/forms';
 import { CommonModule } from '@angular/common';
 import { Router, RouterModule } from '@angular/router';
-import { AuthService } from './auth.service';
+import { AuthService } from '../services/auth.service';
+import { firstValueFrom } from 'rxjs';
 
 @Component({
   standalone: true,
@@ -12,26 +13,26 @@ import { AuthService } from './auth.service';
   styleUrls: ['./login.component.css']
 })
 export class LoginComponent {
-  username = '';
+  // Usa inject en lugar de constructor
+  private auth = inject(AuthService);
+  private router = inject(Router);
+
+  email = '';
   password = '';
   loading = false;
 
-  constructor(private auth: AuthService, private router: Router) {}
-
   async onSubmit() {
-    if (!this.username || !this.password) {
-      alert('Please enter both username and password.');
+    if (!this.email || !this.password) {
+      alert('Please enter both email and password.');
       return;
     }
 
     this.loading = true;
     try {
-      const res: any = await this.auth.login(this.username, this.password);
+      const res = await firstValueFrom(this.auth.login(this.email, this.password));
       if (res && res.access_token) {
-        localStorage.setItem('token', res.access_token);
-        localStorage.setItem('username', this.username);
         alert('Login successful!');
-        this.router.navigateByUrl('/');
+        this.router.navigateByUrl('/app');
       } else {
         alert('Login failed: unexpected response');
       }

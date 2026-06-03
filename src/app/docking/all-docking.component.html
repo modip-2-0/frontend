@@ -1,0 +1,86 @@
+<div class="all-docking-container">
+  <h2>My Docking Jobs</h2>
+
+  @if (loading) {
+    <div class="jobs-grid">
+      @for (i of [1,2,3]; track i) {
+        <div class="job-card skeleton"></div>
+      }
+    </div>
+  } @else if (error) {
+    <div class="message error">{{ error }}</div>
+  } @else if (jobIds.length === 0) {
+    <!-- Sin contenido, no se muestra nada -->
+  } @else {
+    <div class="jobs-grid">
+      @for (id of jobIds; track id) {
+        @let job = jobsMap.get(id);
+        @if (job) {
+          <div class="job-card" (click)="showDetails(job)">
+            <div class="job-header">
+              <strong>{{ job.name || 'Unnamed job' }}</strong>
+              <span class="delete-btn" (click)="deleteJob(id, $event)" title="Delete job">🗑️</span>
+            </div>
+
+            <div class="job-status">
+              <span [class]="'badge ' + getStatusClass(job.status)">{{ job.status }}</span>
+            </div>
+
+            <div class="progress-container">
+              <div class="progress-bar">
+                <div class="progress-fill"
+                     [style.width.%]="getProgress(job)"
+                     [class.completed]="getProgress(job) === 100">
+                </div>
+              </div>
+              <span class="progress-text">{{ getProgress(job) }}%</span>
+            </div>
+
+            <div class="job-meta">
+              <div>Target: {{ job.target_filename || 'unknown' }}</div>
+              <div>Created: {{ job.created_at | date:'short' }}</div>
+            </div>
+          </div>
+        }
+      }
+    </div>
+  }
+
+  @if (selectedJob) {
+    <div class="modal" (click)="closeModal()">
+      <div class="modal-content" (click)="$event.stopPropagation()">
+        <span class="close" (click)="closeModal()">&times;</span>
+        <h3>{{ selectedJob.name || 'Docking Job' }}</h3>
+        <div class="detail-grid">
+          <p><strong>Status:</strong> <span [class]="'badge ' + getStatusClass(selectedJob.status)">{{ selectedJob.status }}</span></p>
+          <p><strong>Target file:</strong> {{ selectedJob.target_filename }}</p>
+          <p><strong>Created:</strong> {{ selectedJob.created_at | date:'medium' }}</p>
+          @if (selectedJob.started_at) {
+            <p><strong>Started:</strong> {{ selectedJob.started_at | date:'medium' }}</p>
+          }
+          @if (selectedJob.completed_at) {
+            <p><strong>Completed:</strong> {{ selectedJob.completed_at | date:'medium' }}</p>
+          }
+        </div>
+        <hr />
+        <h4>Results per compound</h4>
+        <div class="results-list">
+          @for (entry of selectedJob.results | keyvalue; track entry.key) {
+            <div class="result-item">
+              <strong>{{ entry.key | basename }}</strong>:
+              @if (entry.value.status === 'completed') {
+                <span>Affinity: {{ entry.value.affinity }} kcal/mol</span>
+              } @else if (entry.value.status === 'failed') {
+                <span class="error-text">Failed: {{ entry.value.error }}</span>
+              } @else {
+                <span>{{ entry.value.status }}</span>
+              }
+            </div>
+          } @empty {
+            <div>No results yet.</div>
+          }
+        </div>
+      </div>
+    </div>
+  }
+</div>

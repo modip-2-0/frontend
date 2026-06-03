@@ -10,16 +10,12 @@
 
     <form (ngSubmit)="onSubmit()">
       <div class="field">
-        <label for="register-name">Full Name</label>
-        <input id="register-name" name="name" [(ngModel)]="name" autocomplete="name" />
-      </div>
-      <div class="field">
-        <label for="register-username">Username</label>
-        <input id="register-username" name="username" [(ngModel)]="username" autocomplete="username" />
-      </div>
-      <div class="field">
         <label for="register-email">Email</label>
         <input id="register-email" type="email" name="email" [(ngModel)]="email" autocomplete="email" />
+      </div>
+      <div class="field">
+        <label for="register-name">Full Name</label>
+        <input id="register-name" name="name" [(ngModel)]="name" autocomplete="name" />
       </div>
       <div class="field">
         <label for="register-password">Password</label>
@@ -32,7 +28,7 @@
 
       <div class="actions">
         <button class="primary" type="submit" [disabled]="loading">{{ loading ? 'Creating...' : 'Create Account' }}</button>
-        <button class="secondary" type="button" routerLink="/login">Back to login</button>
+        <button class="secondary" type="button" routerLink="/auth/login">Back to login</button>
       </div>
     </form>
   </div>
